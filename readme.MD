@@ -7,8 +7,9 @@ Dataset is NSL-KDD.zip
 
 create data dir:
 ```bash
-mkdir -p /data/raw/{val,test,train}
-mkdir -p /data/processed_nslkdd
+mkdir -p data/raw/{val,test,train}
+mkdir -p data/processed_nslkdd
+mkdir -p models
 ```
 
 ### How to run

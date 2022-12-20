@@ -1,15 +1,22 @@
 import numpy as np
 import pandas as pd
 from sklearn.metrics import accuracy_score
-
+import os
 from dbn.tensorflow import SupervisedDBNClassification
 
-y_df = pd.read_csv('../dbn-based-nids/data/processed_nslkdd/train/train_labels.csv').iloc[:, 1:]
 
-x_df = pd.read_csv('../dbn-based-nids/data/processed_nslkdd/train/train_features.csv').iloc[:, 1:]
+DATA_DIR = '../data'
+FILE_PATH_TRAIN_FEATURES = os.path.join(DATA_DIR, 'processed_nslkdd', 'train/train_features.csv')
+FILE_PATH_TRAIN_LABLES = os.path.join(DATA_DIR, 'processed_nslkdd', 'train/train_labels.csv')
 
-X_test = pd.read_csv('../dbn-based-nids/data/processed_nslkdd/test/test_features.csv').iloc[:, 1:]
-Y_test = pd.read_csv('../dbn-based-nids/data/processed_nslkdd/test/test_labels.csv').iloc[:, 1:]
+FILE_PATH_TEST_FEATURES = os.path.join(DATA_DIR, 'processed_nslkdd', 'test/test_features.csv')
+FILE_PATH_TEST_LABLES = os.path.join(DATA_DIR, 'processed_nslkdd', 'test/test_labels.csv')
+
+y_df = pd.read_csv(FILE_PATH_TRAIN_FEATURES).iloc[:, 1:]
+x_df = pd.read_csv(FILE_PATH_TRAIN_LABLES).iloc[:, 1:]
+
+X_test = pd.read_csv(FILE_PATH_TEST_FEATURES).iloc[:, 1:]
+Y_test = pd.read_csv(FILE_PATH_TEST_LABLES).iloc[:, 1:]
 
 X1 = np.array(x_df)
 Y1 = np.array(y_df).transpose()[0]
