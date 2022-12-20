@@ -1,5 +1,8 @@
 ### Deep Belief Networks Project in Deep Learning Course
 
+
+Tested in Python 3.9.2
+
 Dataset is NSL-KDD.zip
 
 create data dir:
