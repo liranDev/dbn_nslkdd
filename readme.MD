@@ -25,4 +25,8 @@ Project Layout
 ![layout](images/layout.png "layout")
 
 
+This Project is based on the work of: albertbup
 
+A Python implementation of Deep Belief Networks built upon NumPy and TensorFlow with scikit-learn compatibility
+
+https://github.com/albertbup/deep-belief-network
