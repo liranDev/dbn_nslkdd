@@ -279,6 +279,52 @@ class UnsupervisedDBN(BaseUnsupervisedDBN, BaseTensorFlowModel):
         setattr(instance, 'rbm_layers', [instance.rbm_class.from_dict(rbm) for rbm in rbm_layers])
         return instance
 
+    def transform(self, X):
+        """
+        Transforms data using the fitted model.
+        :param X: array-like, shape = (n_samples, n_features)
+        :return:
+        """
+        input_data = X
+        for rbm in self.rbm_layers:
+            input_data = rbm.transform(input_data)
+        return input_data
+
+    def reconstruct(self, H):
+        """
+        Reconstructs the visible layer from the last hidden layer
+        :param H: aray-like, shape = (n_samples, n_features)
+        :return:
+        """
+        hidden_values = H
+        for rbm in reversed(self.rbm_layers):
+            hidden_values = rbm.reconstruct(hidden_values)
+        return hidden_values
+
+    def reconstruct_k(self, X, k):
+        """
+        Makes k reconstructions
+        :param X: input data, array-like, shape=(n_samples, n_features)
+        :param k: number of reconstruction passes
+        :return: reconstructed input
+        """
+        data = X
+        for i in range(k):
+            z = self.transform(data)
+            data = self.reconstruct(z)
+        return data
+
+    def impute(self, X_missing, k=1):
+        """
+        Impute missing values, represnted as nan
+        :param X_missing: input array with missing values, shape=(n_samples, n_features)
+        :param k: number of reconstruction passes
+        :return: input with filled values (instead of missing values)
+        """
+        data = X_missing
+        data = np.nan_to_num(data)
+        data = self.reconstruct_k(data, k)
+        return data
 
 class TensorFlowAbstractSupervisedDBN(BaseAbstractSupervisedDBN, BaseTensorFlowModel):
     __metaclass__ = ABCMeta
@@ -479,6 +525,8 @@ class SupervisedDBNClassification(TensorFlowAbstractSupervisedDBN, ClassifierMix
         :return:
         """
         return super(SupervisedDBNClassification, self)._compute_output_units_matrix(X)
+
+
 
     def predict_proba_dict(self, X):
         """
